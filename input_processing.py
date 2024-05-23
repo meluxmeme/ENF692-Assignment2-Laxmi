@@ -38,22 +38,61 @@ class Sensor:
         else:
             raise ValueError("Invalid vehicle change")
 
+    def initialize(self):
+        response = input(
+        "Are changes detected in the vision input ?\nSelect 1 for light, 2 for pedestrian, 3 for vehicle, and 0 to end the program: ")
+        if response in["1" , "2" , "3", "0"]:
+            return response
+        else:
+            raise ValueError("Invalid input, The input must be either 0, 1, 2 or 3")
+
 
 
 def print_message(sensor):
-    pass
+
+    if sensor.light=="red" or sensor.pedestrain == "yes"  or sensor.vehicle=="yes":
+        print("\n \t\t STOP")
+    elif sensor.light=="green" and sensor.pedestrain=="no" and sensor.vehicle=="no":
+        print(" \n \t\t PROCEED")
+    elif sensor.light=="yellow" and sensor.pedestrain=="no" and sensor.vehicle=="no":
+        print("\n \t\t CAUTION")
+
+    print("\nLight = " + str(sensor.light) + "  Pedestrian =  " + str(sensor.pedestrain) + "  Vehicle = " + str(sensor.vehicle) + "\n")
+
+
+   
 
 
 
 def main():
     print("\n***ENSF 692 Car Vision Detector Processing Program***\n")
+    sensor = Sensor()
+
+    while True:
+        try:
+           
+            response = sensor.initialize()
+            if response == "1":
+                sensor.update_status_light()
+
+            elif response == "2":
+                sensor.update_status_pedest()
+
+            elif response == "3":
+                sensor.update_status_vehicle()
+
+            elif response == "0":
+                print("End")
+                break
+            #sensor.update()
+
+        except ValueError as e: 
+            print(e)
+   
+        print_message(sensor)
 
 
 
-
-
-# Conventional Python code for running main within a larger program
-# No additional code should be included below this
 if __name__ == '__main__':
     main()
 
